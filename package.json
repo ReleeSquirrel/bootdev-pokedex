@@ -1,0 +1,29 @@
+{
+  "name": "bootdev-pokedex",
+  "version": "1.0.0",
+  "description": "A Pokédex made using PokéAPI for a Boot.dev project.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tsc",
+    "start": "node dist/main.js",
+    "dev": "npx tsc && node dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReleeSquirrel/bootdev-pokedex.git"
+  },
+  "keywords": [],
+  "author": "Arthur Payne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ReleeSquirrel/bootdev-pokedex/issues"
+  },
+  "homepage": "https://github.com/ReleeSquirrel/bootdev-pokedex#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.10"
+  }
+}
