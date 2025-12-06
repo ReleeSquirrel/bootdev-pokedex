@@ -1,4 +1,7 @@
 import { createInterface } from 'node:readline';
+import { getCommands } from './commands.js';
+
+
 
 export function cleanInput(input: string): string[] {
   const result = input.toLowerCase().trim().split(" ").filter((word) => word.length > 0);
@@ -17,7 +20,19 @@ export function startREPL() {
     if (clean_input.length === 0) {
       rl.prompt();
     } else {
-      console.log(`Your command was: ${clean_input[0]}`);
+      // Respond to Prompt
+      const input_command = clean_input[0];
+      const commands = getCommands();
+      if (input_command in commands) {
+        try {
+          commands[input_command].callback(getCommands());
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        console.log(`Unknown command.`);
+      }
+
       rl.prompt();
     }
   });
