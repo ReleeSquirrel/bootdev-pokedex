@@ -1,12 +1,16 @@
 import { createInterface } from 'node:readline';
 import { commandHelp } from './command_help.js';
 import { commandExit } from './command_exit.js';
+import { commandMap } from './command_map.js';
+import { commandMapb } from './command_mapb.js';
+import { PokeAPI } from './pokeapi.js';
 export function initState() {
     const rl = createInterface({
         input: process.stdin,
         output: process.stdout,
         prompt: "Pokedex > ",
     });
+    const pokeAPI = new PokeAPI();
     const commands = {
         help: {
             name: "help",
@@ -18,10 +22,23 @@ export function initState() {
             description: "Exits the pokedex",
             callback: commandExit,
         },
+        map: {
+            name: "map",
+            description: "Displays the names of Pokemon location-areas, 20 at a time",
+            callback: commandMap,
+        },
+        mapb: {
+            name: "mapb",
+            description: "Displays the previous names of Pokemon location-areas, 20 at a time",
+            callback: commandMapb,
+        },
         // can add more commands here
     };
     return {
         readline_interface: rl,
+        pokeAPI: pokeAPI,
+        nextLocationsURL: "",
+        prevLocationsURL: "",
         commands: commands,
     };
 }

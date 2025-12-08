@@ -4,7 +4,7 @@ export function cleanInput(input) {
 }
 export function startREPL(state) {
     state.readline_interface.prompt();
-    state.readline_interface.on("line", (input) => {
+    state.readline_interface.on("line", async (input) => {
         const clean_input = cleanInput(input);
         if (clean_input.length === 0) {
             state.readline_interface.prompt();
@@ -15,7 +15,7 @@ export function startREPL(state) {
             const commands = state.commands;
             if (input_command in commands) {
                 try {
-                    commands[input_command].callback(state);
+                    await commands[input_command].callback(state);
                 }
                 catch (err) {
                     console.log(err);
