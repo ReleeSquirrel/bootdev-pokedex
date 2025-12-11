@@ -1,6 +1,6 @@
 import { Cache } from "./pokecache.js";
 import { LocationAreaSet, LocationArea } from "./pokedex_location_area_endpoint.js";
-import { Pokemon } from "./pokedex_location_area_endpoint.js";
+import { Pokemon } from "./pokedex_pokemon_endpoint.js";
 
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";

@@ -1,12 +1,13 @@
 import { createInterface, type Interface } from 'node:readline';
 import { PokeAPI } from './pokeapi.js';
-import { Pokemon } from './pokedex_location_area_endpoint.js';
+import { Pokemon } from './pokedex_pokemon_endpoint.js';
 import { commandHelp } from './command_help.js';
 import { commandExit } from './command_exit.js';
 import { commandMap } from './command_map.js';
 import { commandMapb } from './command_mapb.js';
 import { commandExplore } from './command_explore.js';
 import { commandCatch } from './command_catch.js';
+import { commandInspect } from './command_inspect.js';
 
 export type CLICommand = {
   name: string;
@@ -62,6 +63,11 @@ export function initState(): State {
           name: "catch",
           description: "Attempts to catch a pokemon with the given name",
           callback: commandCatch,
+        },
+        inspect: {
+          name: "inspect",
+          description: "Describe a pokemon from your pokedex",
+          callback: commandInspect,
         },
         // can add more commands here
     };

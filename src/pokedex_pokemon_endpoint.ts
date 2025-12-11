@@ -1,4 +1,4 @@
-export interface Root {
+export interface Pokemon {
   abilities: Ability[]
   base_experience: number
   cries: Cries
