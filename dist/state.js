@@ -7,6 +7,7 @@ import { commandMapb } from './command_mapb.js';
 import { commandExplore } from './command_explore.js';
 import { commandCatch } from './command_catch.js';
 import { commandInspect } from './command_inspect.js';
+import { commandPokedex } from './command_pokedex.js';
 export function initState() {
     const rl = createInterface({
         input: process.stdin,
@@ -49,6 +50,11 @@ export function initState() {
             name: "inspect",
             description: "Describe a pokemon from your pokedex",
             callback: commandInspect,
+        },
+        pokedex: {
+            name: "pokedex",
+            description: "Lists all pokemon you have caught",
+            callback: commandPokedex,
         },
         // can add more commands here
     };
