@@ -1,9 +1,11 @@
 import { createInterface } from 'node:readline';
+import { PokeAPI } from './pokeapi.js';
 import { commandHelp } from './command_help.js';
 import { commandExit } from './command_exit.js';
 import { commandMap } from './command_map.js';
 import { commandMapb } from './command_mapb.js';
-import { PokeAPI } from './pokeapi.js';
+import { commandExplore } from './command_explore.js';
+import { commandCatch } from './command_catch.js';
 export function initState() {
     const rl = createInterface({
         input: process.stdin,
@@ -32,13 +34,25 @@ export function initState() {
             description: "Displays the previous names of Pokemon location-areas, 20 at a time",
             callback: commandMapb,
         },
+        explore: {
+            name: "explore",
+            description: "Displays a list of all pokemon in the named area",
+            callback: commandExplore,
+        },
+        catch: {
+            name: "catch",
+            description: "Attempts to catch a pokemon with the given name",
+            callback: commandCatch,
+        },
         // can add more commands here
     };
+    const pokedex = {};
     return {
         readline_interface: rl,
         pokeAPI: pokeAPI,
         nextLocationsURL: "",
         prevLocationsURL: "",
         commands: commands,
+        pokedex: pokedex,
     };
 }

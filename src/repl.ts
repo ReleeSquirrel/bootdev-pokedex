@@ -1,7 +1,5 @@
 import { State } from "./state.js";
 
-
-
 export function cleanInput(input: string): string[] {
   const result = input.toLowerCase().trim().split(" ").filter((word) => word.length > 0);
   return result;
@@ -17,10 +15,11 @@ export function startREPL(state: State) {
     } else {
       // Respond to Prompt
       const input_command = clean_input[0];
+      const input_arguments = clean_input.slice(1);
       const commands = state.commands;
       if (input_command in commands) {
         try {
-          await commands[input_command].callback(state);
+          await commands[input_command].callback(state, ...input_arguments);
         } catch (err) {
           console.log(err);
         }

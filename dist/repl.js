@@ -12,10 +12,11 @@ export function startREPL(state) {
         else {
             // Respond to Prompt
             const input_command = clean_input[0];
+            const input_arguments = clean_input.slice(1);
             const commands = state.commands;
             if (input_command in commands) {
                 try {
-                    await commands[input_command].callback(state);
+                    await commands[input_command].callback(state, ...input_arguments);
                 }
                 catch (err) {
                     console.log(err);

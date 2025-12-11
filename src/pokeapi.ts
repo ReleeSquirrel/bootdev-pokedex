@@ -1,4 +1,6 @@
-import { Cache } from "./pokecache";
+import { Cache } from "./pokecache.js";
+import { LocationAreaSet, LocationArea } from "./pokedex_location_area_endpoint.js";
+import { Pokemon } from "./pokedex_location_area_endpoint.js";
 
 export class PokeAPI {
     private static readonly baseURL = "https://pokeapi.co/api/v2";
@@ -9,7 +11,7 @@ export class PokeAPI {
         this.cache = new Cache(1000);
     }
 
-    async fetchLocationAreaSet(pageURL?: string): Promise<LocationAreaSet> {
+    async fetchLocationAreaSet(pageURL?: string): Promise<LocationAreaSet | undefined> {
         if (pageURL != undefined) {
             if (this.cache.get(pageURL) != undefined) {
                 return this.cache.get(pageURL);
@@ -19,14 +21,15 @@ export class PokeAPI {
                     const response = await fetch(pageURL);
                     if (!response.ok) {
                         console.log(`HTTP Request Failed - Response status: ${response.status}`);
+                        return undefined;
+                    } else {
+                        const result: LocationAreaSet = await response.json();
+                        this.cache.add(pageURL, result);
+                        return result;
                     }
-                    const result: LocationAreaSet = await response.json();
-                    this.cache.add(pageURL, result);
-                    return result;
                 } catch (err) {
                     console.log(err);
-                    const result: LocationAreaSet = {} as LocationAreaSet;
-                    return result;
+                    return undefined;
                 }
             }
         } else {
@@ -38,46 +41,61 @@ export class PokeAPI {
                     const response = await fetch(PokeAPI.baseURL + `/location-area/`);
                     if (!response.ok) {
                         console.log(`HTTP Request Failed - Response status: ${response.status}`);
+                        return undefined;
+                    } else {
+                        const result: LocationAreaSet = await response.json();
+                        this.cache.add(PokeAPI.baseURL + `/location-area/`, result);
+                        return result;
                     }
-                    const result: LocationAreaSet = await response.json();
-                    this.cache.add(PokeAPI.baseURL + `/location-area/`, result);
-                    return result;
                 } catch (err) {
                     console.log(err);
-                    const result: LocationAreaSet = {} as LocationAreaSet;
-                    return result;
+                    return undefined;
                 }
             }
         }
     }
 
 
-    async fetchLocationAreaURL(locationName: string): Promise<LocationAreaURL> {
-        try {
-            const response = await fetch(PokeAPI.baseURL + `/${locationName}/`);
-            if (!response.ok) {
-                console.log(`HTTP Request Failed - Response status: ${response.status}`);
+    async fetchLocationArea(locationName: string): Promise<LocationArea | undefined> {
+        if (this.cache.get(PokeAPI.baseURL + `/location-area/${locationName}/`) != undefined) {
+            return this.cache.get(PokeAPI.baseURL + `/location-area/${locationName}/`);
+        } else {
+            try {
+                const response = await fetch(PokeAPI.baseURL + `/location-area/${locationName}/`);
+                if (!response.ok) {
+                    console.log(`HTTP Request Failed - Response status: ${response.status}`);
+                    return undefined;
+                } else {
+                    const result: LocationArea = await response.json();
+                    this.cache.add(PokeAPI.baseURL + `/location-area/${locationName}/`, result);
+                    return result;
+                }
+            } catch (err) {
+                console.log(err);
+                return undefined;
             }
-            const result: LocationAreaURL = await response.json();
-            return result;
-        } catch (err) {
-            console.log(err);
-            const result: LocationAreaURL = {} as LocationAreaURL;
-            return result;
         }
     }
-}
 
 
-export type LocationAreaSet = {
-    count: number
-    next: string
-    previous: any
-    results: LocationAreaURL[]
-}
-
-
-export type LocationAreaURL = {
-    name: string
-    url: string
+    async fetchPokemon(pokemonName: string): Promise<Pokemon | undefined> {
+        if (this.cache.get(PokeAPI.baseURL + `/pokemon/${pokemonName}/`) != undefined) {
+            return this.cache.get(PokeAPI.baseURL + `/pokemon/${pokemonName}/`);
+        } else {
+            try {
+                const response = await fetch(PokeAPI.baseURL + `/pokemon/${pokemonName}/`);
+                if (!response.ok) {
+                    console.log(`HTTP Request Failed - Response status: ${response.status}`);
+                    return undefined;
+                } else {
+                    const result: Pokemon = await response.json();
+                    this.cache.add(PokeAPI.baseURL + `/pokemon/${pokemonName}/`, result);
+                    return result;
+                }
+            } catch (err) {
+                console.log(err);
+                return undefined;
+            }
+        }
+    }
 }
