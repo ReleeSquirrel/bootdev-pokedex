@@ -1,7 +1,17 @@
 import { State } from "./state.js";
 
 export async function commandCatch(state: State, ...args: string[]) {
+    if (args[0] === undefined) {
+        console.log(`Please enter the name of a pokemon to catch.`);
+        return;
+    }
     const target_pokemon_name = args[0];
+
+    if (target_pokemon_name in state.pokedex) {
+        console.log(`You already caught ${target_pokemon_name}`);
+        return;
+    }
+
     const target_pokemon = await state.pokeAPI.fetchPokemon(target_pokemon_name);
 
     if (target_pokemon != undefined) {
